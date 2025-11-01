@@ -1,14 +1,14 @@
 import express from "express";
 import { SignUp } from "../controllers/auth.controller.js";
 
-const router = express.Router();
+const authrouter = express.Router();
 
 // Route for user registration
-router.post("/signup", SignUp);
-router.post("/login", login);
-router.post("/logout", logout);
+authrouter.post("/signup", SignUp);
+authrouter.post("/login", login);
+authrouter.post("/logout", logout);
 
 // You can add login, logout, etc., later like this:
 // router.post("/login", Login);
 
-export default router;
+export default authrouter;

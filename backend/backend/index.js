@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose, { connect } from "mongoose";
+import cors from "cors";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.route.js";
 import dotenv from "dotenv";
@@ -11,7 +12,12 @@ let port = process.env.PORT;
 
 app.use("/api", authRoutes);
 app.use(cookieParser);
-
+app.use(
+  cors({
+    origin: "https://localhost:5173",
+    credentials: true,
+  })
+);
 /*app.get("/", (req, res) => {
   res.send("Hello World");
 });*/

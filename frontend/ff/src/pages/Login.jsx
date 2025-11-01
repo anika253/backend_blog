@@ -1,19 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { dataContext } from "../context/UserContext";
+import axios from "axios";
+import { useNavigate } from "react-router";
+let nav = useNavigate();
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const serverUrl = useContext(dataContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("Login data:", formData);
-    //  Connect
+    try {
+      const response = await axios.post(
+        `${serverUrl}/api/login`,
+        { email, password },
+        { withCredentials: true }
+      );
+      console.log("Login successful:", response.data);
+      // You can add redirect logic here after successful login
+    } catch (err) {
+      console.error("Login error:", err.response.data.message);
+    }
   };
 
   return (
@@ -28,22 +36,22 @@ const Login = () => {
           <h2 className="text-2xl font-semibold text-white">Login</h2>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="email"
-            name="email"
             placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
             className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
           <input
             type="password"
-            name="password"
             placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
             className="w-full p-3 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
@@ -53,14 +61,14 @@ const Login = () => {
           >
             Login
           </button>
+          <p
+            className="text-white cursor-pointer"
+            onClick={() => nav("/signup")}
+          >
+            Don’t have an account?{" "}
+            <span className="text-indigo-400">Sign Up</span>
+          </p>
         </form>
-
-        <p className="text-gray-400 text-center mt-6 text-sm">
-          Don’t have an account?{" "}
-          <a href="/signup" className="text-indigo-400 hover:underline">
-            Sign Up
-          </a>
-        </p>
       </div>
     </div>
   );

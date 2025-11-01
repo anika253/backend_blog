@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { dataContext } from "../context/UserContext.jsx";
-
+import { useNavigate } from "react-router";
+let nav = useNavigate();
 const SignUp = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -11,10 +12,10 @@ const SignUp = () => {
     password: "",
   });
   const handleSignUp = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // to stop refreshing again and again
     try {
       let data = await axios.post(
-        serverUrl + "/api/signUp",
+        serverUrl + "/api/sigup",
         {
           firstName,
           lastName,
@@ -106,14 +107,14 @@ const SignUp = () => {
           >
             Sign Up
           </button>
+          <p
+            className="text-white cursor-pointer"
+            onClick={() => nav("/login")}
+          >
+            Already have an account?{" "}
+            <span className="text-indigo-400">Login</span>
+          </p>
         </form>
-
-        <p className="text-gray-400 text-center mt-6 text-sm">
-          Already have an account?{" "}
-          <a href="/login" className="text-indigo-400 hover:underline">
-            Log in
-          </a>
-        </p>
       </div>
     </div>
   );
